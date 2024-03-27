@@ -295,9 +295,9 @@ func (g *genericCache) load(key interface{}) (interface{}, error) {
 	// It is possible that another call loaded the value for this key.
 	// Let's do a double check if that was the case, since we have
 	// the lock.
-	if val, exists := g.data[key]; exists {
+	if entry, exists := g.data[key]; exists {
 		g.stats.Hit()
-		return val, nil
+		return entry.value, nil
 	} else if g.Load == nil {
 		g.stats.Miss()
 		return nil, errors.Wrap(ErrKeyNotFound, "")
